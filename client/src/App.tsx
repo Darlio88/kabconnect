@@ -26,7 +26,7 @@ function App() {
       element: <Signin />,
     },
     {
-      path: "/chats/:chatID",
+      path: "/chats/:chatId",
       element: <ChatArea />,
     },
     {

@@ -10,15 +10,32 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { baseUrl } from "@/lib/api";
 import decodeJWT from "@/lib/decodeJWT";
-import { IUser } from "@/lib/types";
+import { IChat, IUser } from "@/lib/types";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
-export default function SearchUser({ users }: { users: IUser[] }) {
-  console.log(users);
+export default function SearchUser() {
+  const navigate = useNavigate();
   const [input, setInput] = useState("");
   const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
+  const [users, setUsers] = useState<IUser[] | null>([]);
+
+  useEffect(() => {
+    async function fetchUsers() {
+      const response = await baseUrl.get("/users");
+      if (response.data.error) {
+        toast.error("Error:", response.data.error);
+        console.log("Error:", response.data.error);
+      }
+      const { users: fetchedUsers } = response.data;
+      setUsers(fetchedUsers as IUser[]);
+    }
+
+    fetchUsers();
+  }, []);
   useEffect(() => {
     console.log("input:", input, "users here", users);
     if (input.length < 5) {
@@ -38,7 +55,7 @@ export default function SearchUser({ users }: { users: IUser[] }) {
   }
 
   //handle the clicking the users email
-  function handleChatNavigation(
+  async function handleChatNavigation(
     e: React.MouseEvent<HTMLSpanElement, MouseEvent>,
     email: string,
   ) {
@@ -47,6 +64,21 @@ export default function SearchUser({ users }: { users: IUser[] }) {
     //the current user's email is in the local storage
     const token = localStorage.getItem("token") || "";
     const { email: currentEmail } = decodeJWT(token);
+
+    //fetch the chat id from the server
+    const response = await baseUrl.get(
+      `/chats/search?email1=${currentEmail}&email2=${email}`,
+    );
+
+    //check if there is an error
+    if (response.data.error) {
+      console.log("Error:", response.data.error);
+      toast.error("Error:", response.data.error);
+      return;
+    }
+    const chat: IChat = response.data.chat;
+    // navigate to the chat area fetched server;
+    navigate(`/chats/${chat.chatId}`);
   }
 
   return (
@@ -62,7 +94,7 @@ export default function SearchUser({ users }: { users: IUser[] }) {
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
+          <div className="grid items-center grid-cols-4 gap-4">
             <Label htmlFor="email" className="text-right">
               Email
             </Label>

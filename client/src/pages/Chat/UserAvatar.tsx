@@ -5,7 +5,9 @@ export default function UserAvatar({ email }: Partial<IUser>) {
   return (
     <Avatar>
       <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-      <AvatarFallback>{email?.slice(0, 2) || "CN"}</AvatarFallback>
+      <AvatarFallback>
+        {email?.slice(0, 2).toLocaleUpperCase() || "CN"}
+      </AvatarFallback>
     </Avatar>
   );
 }

@@ -63,11 +63,18 @@ export const getAllUsers = async (req: Request, res: Response) => {
 
 export const findChat = async (req: Request, res: Response) => {
     try {
+        console.log("This is the email payload", req.query)
         const { email1, email2 } = req.query;
         if (!email1 || !email2) return res.status(403).send({ error: "invalid emails" })
 
         if (email1 && email2) {
-            const checkChat = await Chat.findOne({ email1, email2 })
+            const checkChat = await Chat.findOne({
+                $or:[
+                    {email1:email1, email2:email2},
+                    {email1:email2, email2:email1}
+                ]        
+            })
+            console.log("This is the found chat for the two", checkChat)
             if (checkChat) return res.status(200).send({ chat: checkChat })
             //if there is none, create a new chat room;
             const chatId = createID()
@@ -85,7 +92,7 @@ export const thisChat = async (req: Request, res: Response) => {
     try {
         const { chatId } = req.params;
         const checkChat = await Chat.findOne({ chatId })
-        if (!checkChat) return res.status(404).send({ "error": "Chat not found" })
+        if (!checkChat) return res.status(404).send({ error: "Chat not found" })
 
         return res.status(200).send({ chat: checkChat })
     } catch (error) {
@@ -117,6 +124,7 @@ export const updateChat = async (req: Request, res: Response) => {
     try {
     const {chatId} = req.params
     const message:IMessage= req.body
+    console.log(message)
     const checkChat = await Chat.findOne({chatId})
 
     // if there is no chat
@@ -129,6 +137,7 @@ export const updateChat = async (req: Request, res: Response) => {
     checkChat.messages.push(message)
 
     await checkChat.save()
+    console.log(checkChat)
     return res.status(201).send({msg:"OK"})
     } catch (error) {
         console.log("Server error", error)

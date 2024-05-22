@@ -25,6 +25,6 @@ router.get("/chats/:chatId",thisChat)
 router.get("/users/chats/:email", myChats)
 
 //update chat
-router.post("/chats/:chatId",updateChat)
+router.patch("/chats/:chatId",updateChat)
 //export the routes to be used by the application
 export default router
