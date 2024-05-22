@@ -105,8 +105,8 @@ function ChatArea() {
         </div>
       </section>
       <section className="grid gap-2">
-        {data.messages.length < 1 && <div>No Messages...</div>}
-        {data.messages.map((message, idx) => (
+        {data.messages && data.messages.length < 1 && <div>No Messages...</div>}
+        {data.messages && data.messages.map((message, idx) => (
           <ChatItem key={idx} message={message} />
         ))}
       </section>
