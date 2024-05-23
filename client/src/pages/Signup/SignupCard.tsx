@@ -58,14 +58,14 @@ export default function SignupCard() {
       },
     });
   return (
-    <Card className="w-[380px]">
+    <Card className="w-[380px] mx-auto">
       <CardHeader>
         <CardTitle>Create a kabConnect account</CardTitle>
         <CardDescription>Welcome, Use your university email.</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} id="signup">
-          <div className="grid w-full items-center gap-4">
+          <div className="grid items-center w-full gap-4">
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="name">Email</Label>
               <Input
@@ -137,7 +137,7 @@ export default function SignupCard() {
           </div>
         </form>
       </CardContent>
-      <CardFooter className=" grid">
+      <CardFooter className="grid ">
         <Button type="submit" form="signup">
           Sign Up
         </Button>

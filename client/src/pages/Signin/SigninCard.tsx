@@ -49,7 +49,7 @@ export default function SigninCard() {
     },
   });
   return (
-    <Card className="w-[350px]">
+    <Card className="w-[350px] mx-auto">
       <CardHeader>
         <CardTitle>Sign into your KabConnect account</CardTitle>
         <CardDescription>
@@ -58,7 +58,7 @@ export default function SigninCard() {
       </CardHeader>
       <CardContent>
         <form id="signin" onSubmit={handleSubmit}>
-          <div className="grid w-full items-center gap-4">
+          <div className="grid items-center w-full gap-4">
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="name">Email</Label>
               <Input
@@ -88,7 +88,7 @@ export default function SigninCard() {
           </div>
         </form>
       </CardContent>
-      <CardFooter className=" grid">
+      <CardFooter className="grid ">
         <Button type="submit" form="signin">
           Sign In
         </Button>

@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { IoSendSharp } from "react-icons/io5";
 import { FaArrowLeft } from "react-icons/fa";
 import { baseUrl } from "@/lib/api";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { IChat, IMessage } from "@/lib/types";
 import ChatItem from "./ChatItem";
 import { Input } from "@/components/ui/input";
@@ -84,17 +84,19 @@ function ChatArea() {
     return <div>No messages, Error fetching messages</div>;
   }
   return (
-    <div className="grid w-[380px] py-3 px-2">
+    <div className="grid px-2 py-3">
       {/* container */}
+      <div className="w-[400px] mx-auto">
       <section className="flex items-start justify-between mb-2">
         {/* left */}
         <div className="flex ">
-          <Button
-            onClick={() => navigate("/chats")}
+          <Link
+            // onClick={() => navigate("/chats")}
+            to="/chats"
             className="flex items-center justify-center mr-1 rounded-full shadow-sm"
           >
             <FaArrowLeft />
-          </Button>
+          </Link>
           <span>{data.email1 === email ? data.email2 : data.email1}</span>
         </div>
         {/* right */}
@@ -124,6 +126,8 @@ function ChatArea() {
           <IoSendSharp />
         </Button>
       </span>
+      </div>
+     
     </div>
   );
 }

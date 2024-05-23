@@ -38,12 +38,13 @@ function Messages() {
   }
   return (
     <section className="grid gap-1">
-      {data.map((chat, idx) => (
-        <Message
+      {Array.isArray(data) && data.length>0 && data.map((chat, idx) => (
+        chat.messages.length>0 ?<Message
+        chatId={chat.chatId}
           email={chat.email1 === email ? chat.email2 : chat.email1}
           key={idx}
           message={chat.messages[chat.messages.length - 1]}
-        />
+        /> : null
       ))}
     </section>
   );

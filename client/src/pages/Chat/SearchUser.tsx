@@ -16,13 +16,17 @@ import { IChat, IUser } from "@/lib/types";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { Badge } from "@/components/ui/badge";
 
 export default function SearchUser() {
   const navigate = useNavigate();
   const [input, setInput] = useState("");
   const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
   const [users, setUsers] = useState<IUser[] | null>([]);
-
+    // search for chat with the email above and email of the current logged in user
+    //the current user's email is in the local storage
+    const token = localStorage.getItem("token") || "";
+    const { email: currentEmail } = decodeJWT(token);
   useEffect(() => {
     async function fetchUsers() {
       const response = await baseUrl.get("/users");
@@ -60,10 +64,7 @@ export default function SearchUser() {
     email: string,
   ) {
     e.preventDefault();
-    // search for chat with the email above and email of the current logged in user
-    //the current user's email is in the local storage
-    const token = localStorage.getItem("token") || "";
-    const { email: currentEmail } = decodeJWT(token);
+
 
     //fetch the chat id from the server
     const response = await baseUrl.get(
@@ -88,7 +89,7 @@ export default function SearchUser() {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Search for user</DialogTitle>
+          <DialogTitle>Search for student</DialogTitle>
           <DialogDescription>
             Search for the user using their email and search chat.
           </DialogDescription>
@@ -110,20 +111,20 @@ export default function SearchUser() {
             <div>
               {filteredUsers.length > 0
                 ? filteredUsers.slice(0, 3).map((user, idx) => (
-                    <span
+                   user.email !== currentEmail? <Badge
                       onClick={(e) => handleChatNavigation(e, user.email)}
                       className="shadow-sm hover:cursor-pointer"
                       key={idx}
                     >
                       {user.email}
-                    </span>
+                    </Badge> : null
                   ))
                 : "No matches"}
             </div>
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit">Save changes</Button>
+          <Button type="submit">Search User</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
