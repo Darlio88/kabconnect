@@ -1,10 +1,7 @@
-import { Navigate, Outlet } from 'react-router-dom'
+import { Navigate, Outlet } from "react-router-dom";
 const PrivateRoutes = () => {
-  
-    const token = localStorage.getItem('token')
-return (
-    token ? <Outlet/> : <Navigate to='/signin'/>
-  )
-}
+  const token = localStorage.getItem("token");
+  return token ? <Outlet /> : <Navigate to="/signin" />;
+};
 
-export default PrivateRoutes
+export default PrivateRoutes;

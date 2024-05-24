@@ -23,10 +23,10 @@ export default function SearchUser() {
   const [input, setInput] = useState("");
   const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
   const [users, setUsers] = useState<IUser[] | null>([]);
-    // search for chat with the email above and email of the current logged in user
-    //the current user's email is in the local storage
-    const token = localStorage.getItem("token") || "";
-    const { email: currentEmail } = decodeJWT(token);
+  // search for chat with the email above and email of the current logged in user
+  //the current user's email is in the local storage
+  const token = localStorage.getItem("token") || "";
+  const { email: currentEmail } = decodeJWT(token);
   useEffect(() => {
     async function fetchUsers() {
       const response = await baseUrl.get("/users");
@@ -46,9 +46,12 @@ export default function SearchUser() {
       setFilteredUsers(() => []);
     } else {
       //filter the users
-      const filtered = users.filter((user) => user.email.indexOf(input) !== -1);
+      const filtered = users?.filter((user) => user.email.indexOf(input) !== -1);
       console.log("filtered", filtered);
-      setFilteredUsers(() => filtered);
+      if(filtered !== undefined){
+        setFilteredUsers(() => filtered);
+      }
+      
     }
   }, [input]);
 
@@ -64,7 +67,6 @@ export default function SearchUser() {
     email: string,
   ) {
     e.preventDefault();
-
 
     //fetch the chat id from the server
     const response = await baseUrl.get(
@@ -110,15 +112,17 @@ export default function SearchUser() {
             <h6 className="">Filtered chats</h6>
             <div>
               {filteredUsers.length > 0
-                ? filteredUsers.slice(0, 3).map((user, idx) => (
-                   user.email !== currentEmail? <Badge
-                      onClick={(e) => handleChatNavigation(e, user.email)}
-                      className="shadow-sm hover:cursor-pointer"
-                      key={idx}
-                    >
-                      {user.email}
-                    </Badge> : null
-                  ))
+                ? filteredUsers.slice(0, 3).map((user, idx) =>
+                    user.email !== currentEmail ? (
+                      <Badge
+                        onClick={(e) => handleChatNavigation(e, user.email)}
+                        className="shadow-sm hover:cursor-pointer"
+                        key={idx}
+                      >
+                        {user.email}
+                      </Badge>
+                    ) : null,
+                  )
                 : "No matches"}
             </div>
           </div>

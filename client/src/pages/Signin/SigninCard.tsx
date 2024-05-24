@@ -12,10 +12,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useFormik } from "formik";
 import { baseUrl } from "@/lib/api";
+import { ImSpinner9 } from "react-icons/im";
 import { Link, useNavigate } from "react-router-dom";
+import { cn } from "@/lib/utils";
 export default function SigninCard() {
   const navigate = useNavigate();
-  const { handleSubmit, handleChange, values } = useFormik<{
+  const { handleSubmit, handleChange, values, isSubmitting } = useFormik<{
     email: string;
     password: string;
   }>({
@@ -41,7 +43,7 @@ export default function SigninCard() {
       }
       localStorage.setItem("token", token);
 
-      //reset the form vefore leaving page
+      //reset the form before leaving page
       resetForm();
       //navigate to the chat pages
       navigate("/chats");
@@ -89,8 +91,23 @@ export default function SigninCard() {
         </form>
       </CardContent>
       <CardFooter className="grid ">
-        <Button type="submit" form="signin">
+        <Button
+          disabled={isSubmitting}
+          className=""
+          type="submit"
+          form="signin"
+        >
           Sign In
+          {isSubmitting && (
+            <span
+              className={cn(
+                "flex ml-2 p-1 justify-center items-center",
+                "animate-spin",
+              )}
+            >
+              <ImSpinner9 />
+            </span>
+          )}
         </Button>
         <div className="my-1">
           <p className="text-base">

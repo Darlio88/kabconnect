@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { IoSendSharp } from "react-icons/io5";
 import { FaArrowLeft } from "react-icons/fa";
 import { baseUrl } from "@/lib/api";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { IChat, IMessage } from "@/lib/types";
 import ChatItem from "./ChatItem";
 import { Input } from "@/components/ui/input";
@@ -19,7 +19,6 @@ function ChatArea() {
   const [textMessage, setTextMessage] = useState("");
   console.log(params);
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
   const { data, error, isLoading } = useQuery({
     queryKey: ["messages"],
     queryFn: async () => {
@@ -87,47 +86,49 @@ function ChatArea() {
     <div className="grid px-2 py-3">
       {/* container */}
       <div className="w-[400px] mx-auto">
-      <section className="flex items-start justify-between mb-2">
-        {/* left */}
-        <div className="flex ">
-          <Link
-            // onClick={() => navigate("/chats")}
-            to="/chats"
-            className="flex items-center justify-center mr-1 rounded-full shadow-sm"
-          >
-            <FaArrowLeft />
-          </Link>
-          <span>{data.email1 === email ? data.email2 : data.email1}</span>
-        </div>
-        {/* right */}
-        <div>
-          <UserAvatar
-            email={data.email1 === email ? data.email2 : data.email1}
+        <section className="flex items-start justify-between mb-2">
+          {/* left */}
+          <div className="flex ">
+            <Link
+              // onClick={() => navigate("/chats")}
+              to="/chats"
+              className="flex items-center justify-center mr-1 rounded-full shadow-sm"
+            >
+              <FaArrowLeft />
+            </Link>
+            <span>{data.email1 === email ? data.email2 : data.email1}</span>
+          </div>
+          {/* right */}
+          <div>
+            <UserAvatar
+              email={data.email1 === email ? data.email2 : data.email1}
+            />
+          </div>
+        </section>
+        <section className="grid gap-2">
+          {data.messages && data.messages.length < 1 && (
+            <div>No Messages...</div>
+          )}
+          {data.messages &&
+            data.messages.map((message, idx) => (
+              <ChatItem key={idx} message={message} />
+            ))}
+        </section>
+        <span className="flex gap-2 my-2">
+          <Input
+            onChange={(e) => setTextMessage(e.target.value)}
+            value={textMessage}
+            placeholder="Enter message here..."
           />
-        </div>
-      </section>
-      <section className="grid gap-2">
-        {data.messages && data.messages.length < 1 && <div>No Messages...</div>}
-        {data.messages && data.messages.map((message, idx) => (
-          <ChatItem key={idx} message={message} />
-        ))}
-      </section>
-      <span className="flex gap-2 my-2">
-        <Input
-          onChange={(e) => setTextMessage(e.target.value)}
-          value={textMessage}
-          placeholder="Enter message here..."
-        />
-        <Button
-          disabled={textMessage.length < 2}
-          onClick={sendMessage}
-          type="button"
-        >
-          <IoSendSharp />
-        </Button>
-      </span>
+          <Button
+            disabled={textMessage.length < 2}
+            onClick={sendMessage}
+            type="button"
+          >
+            <IoSendSharp />
+          </Button>
+        </span>
       </div>
-     
     </div>
   );
 }

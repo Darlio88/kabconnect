@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "react-query";
-import { BrowserRouter,  Route,  Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 //pages
 import Signin from "@/pages/Signin";
@@ -8,7 +8,6 @@ import Chat from "@/pages/Chat";
 import Signup from "@/pages/Signup";
 import ChatArea from "./pages/Chat/ChatArea";
 import PrivateRoutes from "./components/ProtectedRoute";
-
 
 //query client
 const client = new QueryClient();
@@ -20,7 +19,7 @@ function App() {
   //     element: <Home />,
   //   },
   //   {
-      
+
   //     element: <PrivateRoutes />,
   //     children:[
   //       {
@@ -51,15 +50,15 @@ function App() {
     <QueryClientProvider client={client}>
       {/* <RouterProvider router={router} /> */}
       <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/signin" element={<Signin />} />
-        <Route path="/signup" element={<Signup />} />
-         <Route element={<PrivateRoutes />}>
-         <Route element={<Chat />} path="/chats" />
-         <Route element={<ChatArea />} path="/chats/:chatId" />
-        </Route>
-      </Routes>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/signin" element={<Signin />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route element={<PrivateRoutes />}>
+            <Route element={<Chat />} path="/chats" />
+            <Route element={<ChatArea />} path="/chats/:chatId" />
+          </Route>
+        </Routes>
       </BrowserRouter>
       <Toaster />
     </QueryClientProvider>

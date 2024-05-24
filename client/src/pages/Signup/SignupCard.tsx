@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { ImSpinner9 } from "react-icons/im";
 import { useFormik } from "formik";
 import {
   Select,
@@ -22,9 +23,10 @@ import {
 } from "@/components/ui/select";
 import { IUser } from "@/lib/types";
 import { baseUrl } from "@/lib/api";
+import { cn } from "@/lib/utils";
 export default function SignupCard() {
   const navigate = useNavigate();
-  const { values, handleSubmit, handleChange, setFieldValue } =
+  const { values, handleSubmit, handleChange, setFieldValue, isSubmitting } =
     useFormik<IUser>({
       initialValues: {
         email: "",
@@ -138,8 +140,23 @@ export default function SignupCard() {
         </form>
       </CardContent>
       <CardFooter className="grid ">
-        <Button type="submit" form="signup">
+        <Button
+          disabled={isSubmitting}
+          className=""
+          type="submit"
+          form="signup"
+        >
           Sign Up
+          {isSubmitting && (
+            <span
+              className={cn(
+                "flex ml-2 p-1 justify-center items-center",
+                isSubmitting && "animate-spin",
+              )}
+            >
+              <ImSpinner9 />
+            </span>
+          )}
         </Button>
         <div className="my-1">
           <p className="text-base">
