@@ -20,18 +20,19 @@ app.use("/api", routes)
 
 
 //port
-const PORT = process.env.PORT || 5000
+const port = parseInt(process.env.PORT) || 5000
 
+console.log("Typeof port", typeof port)
 
 //connect to the database
 
     //listen on port
-    app.listen(PORT, () => {
+    app.listen(port, () => {
         mongoose.connect(process.env.MONGO_URI as string).then(() => {
         console.log("Connected to database")
         }).catch(error => {
             console.log("Failed to connect to the database", error)
         })
-        console.log("App is running on port", PORT)
+        console.log("App is running on port", port)
     })
 
