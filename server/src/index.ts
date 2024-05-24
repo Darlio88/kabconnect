@@ -20,7 +20,7 @@ app.use("/api", routes)
 
 
 //port
-const port = parseInt(process.env.PORT) || 5000
+const port = parseInt(process.env.PORT as string) || 5000
 
 console.log("Typeof port", typeof port)
 
