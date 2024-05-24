@@ -24,11 +24,14 @@ const PORT = process.env.PORT || 5000
 
 
 //connect to the database
-mongoose.connect(process.env.MONGO_URI as string).then(() => {
+
     //listen on port
     app.listen(PORT, () => {
+        mongoose.connect(process.env.MONGO_URI as string).then(() => {
+
+        }).catch(error => {
+            console.log("Failed to connect to the database", error)
+        })
         console.log("App is running on port", PORT)
     })
-}).catch(error => {
-    console.log("Failed to connect to the database", error)
-})
+
