@@ -23,9 +23,10 @@ app.use("/api", routes)
 const port = parseInt(process.env.PORT as string) || 5000
 
 console.log("Typeof port", typeof port)
-
+console.log("Connection string", process.env.MONGO_URI)
 //connect to the database
-
+mongoose.set('debug', true);
+     
     //listen on port
     app.listen(port, () => {
         mongoose.connect(process.env.MONGO_URI as string).then(() => {
